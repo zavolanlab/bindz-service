@@ -10,8 +10,8 @@ LABEL software.website="https://github.com/elixir-cloud-aai/trs-filer"
 LABEL software.documentation="https://github.com/elixir-cloud-aai/trs-filer"
 LABEL software.license="https://github.com/elixir-cloud-aai/trs-filer/blob/master/LICENSE"
 LABEL software.tags="General"
-LABEL maintainer="nagorikushagra9@gmail.com"
-LABEL maintainer.organisation="ELIXIR Cloud & AAI"
+LABEL maintainer="akrish136@gmail.com"
+LABEL maintainer.organisation="Zavolab, University of Basel"
 LABEL maintainer.license="https://spdx.org/licenses/Apache-2.0"
 
 # Python UserID workaround for OpenShift/K8S
