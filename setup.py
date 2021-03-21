@@ -27,4 +27,5 @@ setup(
         'Programming Language :: Python :: 3.8',
     ],
     install_requires=['connexion', 'Flask-Cors', 'Flask-PyMongo'],
-) 
+)
+ 
