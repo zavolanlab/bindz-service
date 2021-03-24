@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: Binding Scanner API Specification
+  license:
+    name: Apache 2.0
+  description: >-
+    BindingScanner is a tool for predicting binding sites of distinct regulators
+    in an RNA sequence by calculating posterior probabilities with MotEvo, given
+    the sequence specificity of regulators, represented as position-specific
+    weight matrices. It is intended to help in the analysis of individual
+    reporter sequences, by predicting regulatory that may act on the sequence as
+    well as how the binding may be affected by specific mutations introduced in
+    the reporter sequences. The tools scans the input sequence with a set of
+    position-specific weight matrices (PWMs) representing the binding
+    specificity of individual RNA-binding proteins.
+  version: 1.0.0
+paths:
+  /runs/{id}/status:
+    get:
+      summary: 'Returns status of the run'
+      operationId: statusGet
+      description: This endpoint returns status corresponding to the id in path.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique identifier of the pipeline information.
+          example: 1234
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Status of the run'
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: 'Status unavailable for the run.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /runs/{id}/table:
+    get:
+      summary: 'Returns merged tsv file'
+      operationId: TsvGet
+      description: This endpoint returns merged tsv file corresponding to the id in path.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique identifier of the pipeline information.
+          example: 1234
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Merged tsv file.'
+          content:
+            text/tsv:
+              schema:
+                type: string
+        '404':
+          description: File cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /runs/{id}/heatmap:
+    get:
+      summary: 'Returns a pdf file with heatmap of binding sites'
+      operationId: HeatmapGet
+      description: This endpoint returns a heatmap pdf file corresponding to the id in path.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A unique identifier of the pipeline information.
+          example: 1234
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Heatmap pdf file.'
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: File cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /runs:
+    post:
+      summary: Register pipeline info.
+      description: Inputs for the binding scanner to process.
+      operationId: infoPost
+      requestBody:
+        description: Pipeline info to add.
+        required: true
+        content:
+          applcation/json:
+            schema:
+              type: object
+              properties:
+                sequence:
+                  type: string
+                  example: ATGTGAGTGAAGTGTGGGAAAGATGACTCGATATATCTGGATGCTAGGGATCGGATGGCGATACG
+                pwm_directory:
+                  type: string
+                  example: ATtRACT_hsa
+                background_binding_prior:
+                  type: number
+                  example: 0.99
+                  default: 0.99
+                min_binding_posterior:
+                  type: number
+                  example: 0.01
+                  default: 0.01
+                markov_chain_order:
+                  type: number
+                  example: 1
+                  default: 1
+      responses:
+        '201':
+          description: Pipeline information was successfully uploaded.
+          content:
+            application/json:
+              schema:
+                description: Pipeline information identifier.
+                type: string
+                example: 1234
+        '400':
+          description: The request is malformed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+      properties:
+        code:
+          type: integer
+          format: int32
+          default: 500
+        message:
+          type: string
+          default: Internal Server Error
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/krish8484/Binding-Scanner/1.0.0
