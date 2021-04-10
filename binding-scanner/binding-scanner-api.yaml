@@ -170,6 +170,4 @@ components:
           type: string
           default: Internal Server Error
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/krish8484/Binding-Scanner/1.0.0
+  - url: http://localhost/
