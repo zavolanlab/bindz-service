@@ -3,12 +3,12 @@ services:
     scanner:
         build:
             context: ./
-            dockerfile: ./Docker/api/Dockerfile
+            dockerfile: ./Dockerfile
         restart: unless-stopped
         links: 
             - mongodb
             - weskit
-        command: bash -c "source activate weskit; cd /app/binding-scanner; python app.py"
+        command: bash -c "cd /app/binding-scanner; python app.py"
         ports:
             - "80:8080"
 
@@ -19,10 +19,11 @@ services:
             - "27017:27017"
 
     weskit:
-        tty: true
         stdin_open: true
-        build: ./Docker/weskit/
+        tty: true
+        image: krish8484/weskit:first
         restart: unless-stopped
+        command: bash -c "source activate weskit && tail -f /dev/null"
         ports:
             - "3306:3306"
 

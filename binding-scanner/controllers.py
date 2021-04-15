@@ -17,7 +17,7 @@ def TsvGet(id):
                      stdout=subprocess.PIPE, 
                      stderr=subprocess.PIPE)
     a, b = process2.communicate()
-    return str(a)
+    return str(b)
 
 def statusGet(id):
     return "Hello3"
