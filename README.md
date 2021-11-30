@@ -1,1 +1,1 @@
-# binding-scanner
+# bindz-service
